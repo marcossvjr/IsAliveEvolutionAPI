@@ -10,21 +10,24 @@ let timeoutId = null;
 
 if (!global.isStarted) {
   // Cria o servidor HTTP local
-  const servidor = http.createServer((req, res) => {
+  const servidor = http.createServer((req, res) => {    
     res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(ultimaResposta);
+    res.end(global.ultimaResposta);
   });
-  
+
   servidor.listen(porta, () => {
     console.log(`Servidor HTTPS rodando em http://localhost:${porta}`);
   });
   
   global.isStarted = true;
 }
-// Função que faz a requisição GET
-function fazerRequisicao(paramUrl) {
-  if (timeoutId)
-    clearTimeout(timeoutId);
+
+let timeout = getRandomInteger(30000, 50000);
+
+
+function fazerRequisicaoGet(paramUrl) {
+  if (global.timeoutId)
+    clearTimeout(global.timeoutId);
   
   https.get(paramUrl, (res) => {
     let dados = '';
@@ -34,18 +37,22 @@ function fazerRequisicao(paramUrl) {
     });
 
     res.on('end', () => {
-      ultimaResposta = dados;
+      global.ultimaResposta = dados;
       console.log(`[${new Date().toISOString()}] Resposta recebida:`, dados);
     });
   }).on('error', (err) => {
-    ultimaResposta = `Erro: ${err.message}`;
+    global.ultimaResposta = `Erro: ${err.message}`;
     console.error(`[${new Date().toISOString()}] Erro na requisição:`, err.message);
   });
 
-  let timeout = getRandomInteger(30000, 50000);
   console.log(`Próxima requisição em ${timeout/1000}s [Agora: ${new Date().toISOString()} | ${new Date((new Date().getTime() + timeout)).toISOString()}]`)
-  timeoutId = setTimeout(fazerRequisicao, timeout);
 }
 
-fazerRequisicao(url1);
-fazerRequisicao(url2);
+global.timeoutId = setTimeout(function(){
+  fazerRequisicoes();
+}, timeout);
+
+let fazerRequisicoes = function(){
+  fazerRequisicaoGet(url1);
+  fazerRequisicaoGet(url2);
+};
