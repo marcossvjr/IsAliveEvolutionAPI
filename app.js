@@ -12,6 +12,7 @@ if (!global.isStarted) {
   // Cria o servidor HTTP local
   const servidor = http.createServer((req, res) => {    
     res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.write('ok');
     res.end(global.ultimaResposta);
   });
 
@@ -20,14 +21,15 @@ if (!global.isStarted) {
   });
   
   global.isStarted = true;
+} else {
+  
 }
 
 let timeout = getRandomInteger(30000, 50000);
 
 
 function fazerRequisicaoGet(paramUrl) {
-  if (global.timeoutId)
-    clearTimeout(global.timeoutId);
+  
   
   https.get(paramUrl, (res) => {
     let dados = '';
@@ -48,11 +50,16 @@ function fazerRequisicaoGet(paramUrl) {
   console.log(`Próxima requisição em ${timeout/1000}s [Agora: ${new Date().toISOString()} | ${new Date((new Date().getTime() + timeout)).toISOString()}]`)
 }
 
-global.timeoutId = setTimeout(function(){
-  fazerRequisicoes();
-}, timeout);
-
 let fazerRequisicoes = function(){
+  if (global.timeoutId) {
+    clearTimeout(global.timeoutId);
+    global.timeoutId = null;
+  }
+  
   fazerRequisicaoGet(url1);
   fazerRequisicaoGet(url2);
+  
+  global.timeoutId = setTimeout(fazerRequisicoes, timeout);
 };
+
+fazerRequisicoes();
