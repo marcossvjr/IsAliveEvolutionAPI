@@ -24,9 +24,9 @@ function fazerRequisicao() {
     console.error(`[${new Date().toISOString()}] Erro na requisição:`, err.message);
   });
 
-  let timeout = getRandomInteger(180000, 300000);
+  let timeout = getRandomInteger(30000, 50000);
   console.log(`Próxima requisição em ${timeout/1000}s [Agora: ${new Date().toISOString()} | ${new Date((new Date().getTime() + timeout)).toISOString()}]`)
-  setTimeout(fazerRequisicao, getRandomInteger(180000, timeout));
+  setTimeout(fazerRequisicao, timeout);
 }
 
 fazerRequisicao();
