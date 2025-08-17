@@ -3,20 +3,20 @@ const http = require('http');
 
 const url1 = 'https://isaliveevolutionapi.onrender.com';//'https://evolution-api-v2-2-3-4vxf.onrender.com';
 const url2 = 'https://evolution-api-v2-2-3-4vxf.onrender.com';//'https://evolution-api-v2-2-3-4vxf.onrender.com';
-const porta = 443;
+const porta = 80;
 let ultimaResposta = 'Ainda sem resposta da API externa.';
 let getRandomInteger = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 let timeoutId = null;
 
 if (!global.isStarted) {
   // Cria o servidor HTTP local
-  const servidor = https.createServer((req, res) => {
+  const servidor = http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(ultimaResposta);
   });
   
   servidor.listen(porta, () => {
-    console.log(`Servidor HTTPS rodando em https://localhost:${porta}`);
+    console.log(`Servidor HTTPS rodando em http://localhost:${porta}`);
   });
   
   global.isStarted = true;
