@@ -1,17 +1,18 @@
 const https = require('https');
 const http = require('http');
 
-const url = 'https://isaliveevolutionapi.onrender.com:8080';//'https://evolution-api-v2-2-3-4vxf.onrender.com';
-const porta = 8080;
+const url1 = 'https://isaliveevolutionapi.onrender.com';//'https://evolution-api-v2-2-3-4vxf.onrender.com';
+const url2 = 'https://evolution-api-v2-2-3-4vxf.onrender.com';//'https://evolution-api-v2-2-3-4vxf.onrender.com';
+const porta = 80;
 let ultimaResposta = 'Ainda sem resposta da API externa.';
 let getRandomInteger = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 let timeoutId = null;
 // Função que faz a requisição GET
-function fazerRequisicao() {
+function fazerRequisicao(paramUrl) {
   if (timeoutId)
     clearTimeout(timeoutId);
   
-  https.get(url, (res) => {
+  https.get(paramUrl, (res) => {
     let dados = '';
 
     res.on('data', (chunk) => {
@@ -32,7 +33,8 @@ function fazerRequisicao() {
   timeoutId = setTimeout(fazerRequisicao, timeout);
 }
 
-fazerRequisicao();
+fazerRequisicao(url1);
+fazerRequisicao(url2);
 
 // Cria o servidor HTTP local
 const servidor = http.createServer((req, res) => {
