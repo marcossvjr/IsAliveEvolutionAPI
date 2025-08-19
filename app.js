@@ -21,11 +21,9 @@ if (!global.isStarted) {
   });
   
   global.isStarted = true;
-} else {
-  
 }
 
-let timeout = getRandomInteger(30000, 50000);
+let timeout;
 
 
 function fazerRequisicaoGet(paramUrl) {
@@ -55,11 +53,12 @@ let fazerRequisicoes = function(){
     clearTimeout(global.timeoutId);
     global.timeoutId = null;
   }
+
+  timeout = getRandomInteger(30000, 50000);
   
   fazerRequisicaoGet(url1);
   fazerRequisicaoGet(url2);
   
   global.timeoutId = setTimeout(fazerRequisicoes, timeout);
 };
-
 fazerRequisicoes();
