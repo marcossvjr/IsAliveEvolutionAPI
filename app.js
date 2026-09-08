@@ -2,7 +2,7 @@ const https = require('https');
 const http = require('http');
 
 const url1 = 'https://isaliveevolutionapi.onrender.com';//'https://evolution-api-v2-2-3-4vxf.onrender.com';
-const url2 = 'https://evolution-api-v2-2-3-4vxf.onrender.com';//'https://evolution-api-v2-2-3-4vxf.onrender.com';
+const url2 = process.env.EVOLUTION_SERVICE_URL;//'https://evolution-api-v2-2-3-4vxf.onrender.com'
 const porta = 80;
 let ultimaResposta = 'Ainda sem resposta da API externa.';
 let getRandomInteger = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
